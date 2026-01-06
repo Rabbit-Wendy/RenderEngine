@@ -1,3 +1,0 @@
-[submodule "RenderEngine/vendor/spdlog"]
-	path = RenderEngine/vendor/spdlog
-	url = https://gitee.com/devoul/spdlog
