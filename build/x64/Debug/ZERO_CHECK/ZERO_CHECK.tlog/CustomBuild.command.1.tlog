@@ -1,0 +1,10 @@
+^E:\C++PRACTICE\RENDERENGINE\BUILD\CMAKEFILES\1419C8D3E9A4F9CB26B82FF1470F86EA\GENERATE.STAMP.RULE
+setlocal
+D:\cmake-4.1.0\setup\bin\cmake.exe -SE:/C++practice/RenderEngine/source -BE:/C++practice/RenderEngine/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/C++practice/RenderEngine/build/RenderEngine.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

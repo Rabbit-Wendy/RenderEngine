@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="E:\C++practice\RenderEngine\source\SandBox\private\SanboxApp.cpp">
+      <Filter>private</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="E:\C++practice\RenderEngine\source\SandBox\private\SanboxApp.h">
+      <Filter>private</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\C++practice\RenderEngine\source\SandBox\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="private">
+      <UniqueIdentifier>{B699B4F2-B83D-315A-87FD-6C552F2BE9E6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
