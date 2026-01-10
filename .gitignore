@@ -1,8 +1,9 @@
 .vs/
 .bin/
+.build/
+
 
 *.user
 /vs/
 /bin/
-
-.build/
+/build/
