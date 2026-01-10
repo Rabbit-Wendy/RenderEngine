@@ -1,4 +1,0 @@
-E:/C++practice/RenderEngine/build/CMakeFiles/ALL_BUILD.dir
-E:/C++practice/RenderEngine/build/CMakeFiles/ZERO_CHECK.dir
-E:/C++practice/RenderEngine/build/RenderEngine/CMakeFiles/RenderEngine.dir
-E:/C++practice/RenderEngine/build/SandBox/CMakeFiles/SandBox.dir
