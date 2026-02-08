@@ -11,8 +11,9 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${HEADER_FILES} ${SOURCE_F
 add_library(RenderEngine SHARED ${HEADER_FILES} ${SOURCE_FILES})
 
 #定义宏
-target_compile_definitions(RenderEngine PRIVATE RE_BULD_DLL)
+target_compile_definitions(RenderEngine PRIVATE RE_BUILD_DLL)
 
 #包含头文件路径命令
-target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/public)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Core/public)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Events/public)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vendor)

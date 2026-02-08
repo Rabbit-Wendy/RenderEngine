@@ -12,9 +12,6 @@ namespace RE
 
 		virtual void Run();
 	};
-
-	// 
-	//Application* CreateApplication();
 }
 
 
