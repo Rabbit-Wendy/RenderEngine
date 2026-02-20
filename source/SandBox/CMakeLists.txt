@@ -18,3 +18,5 @@ target_link_directories(SandBox PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
 
 #链接库
 target_link_libraries(SandBox PRIVATE RenderEngine)
+target_link_libraries(SandBox PRIVATE glfw)
+target_link_libraries(SandBox PRIVATE OpenGL32)

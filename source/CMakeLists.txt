@@ -25,3 +25,4 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
 #添加子目录
 add_subdirectory(RenderEngine)
 add_subdirectory(SandBox)
+add_subdirectory(GLFW)
