@@ -6,6 +6,8 @@ using namespace RE;
 
 SanboxApp::SanboxApp()
 {
+	m_Window = std::unique_ptr<Window>(Window::Create());
+    m_Window->SetEventCallback(BIND_EVENT_FN(SanboxApp::OnEvent));
 }
 
 SanboxApp::~SanboxApp()
@@ -15,6 +17,15 @@ SanboxApp::~SanboxApp()
 Application* CreateApplication()
 {
 	return new SanboxApp();
+}
+
+void SanboxApp::OnEvent(Event& e)
+{
+	EventDispatcher dispatcher(e);
+	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(SanboxApp::OnWindowClose));
+
+	//³¢ÊÔ´òÓ¡ÊÂ¼þ
+    RE_LOG_CORE_TRACE(e.ToString());
 }
 
 void SanboxApp::Run()
@@ -35,4 +46,10 @@ void SanboxApp::Run()
 		glClear(GL_COLOR_BUFFER_BIT);
 		m_Window->OnUpdate();
 	}
+}
+
+bool SanboxApp::OnWindowClose(WindowCloseEvent& e)
+{
+	m_Running = false;
+	return true;
 }

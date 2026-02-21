@@ -20,7 +20,7 @@ namespace RE
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent::" << GetMouseX() << "," << GetMouseY();
+			ss << "MouseMovedEvent::" << GetMouseX() << "," << GetMouseY();
 			return ss.str();
 		}
 
