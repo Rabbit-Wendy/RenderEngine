@@ -40,7 +40,7 @@ namespace RE
 		{
 			return GetCategoryFlags() == category;
 		}
-	protected:
+	
 		bool m_Handled = false; //事件是否被处理了
 
 	};
