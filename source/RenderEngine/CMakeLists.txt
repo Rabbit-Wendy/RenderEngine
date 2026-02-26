@@ -12,6 +12,7 @@ add_library(RenderEngine SHARED ${HEADER_FILES} ${SOURCE_FILES})
 
 #定义宏
 target_compile_definitions(RenderEngine PRIVATE RE_BUILD_DLL)
+target_compile_definitions(RenderEngine PRIVATE GLFW_INCLUDE_NONE)
 
 #链接库路径
 target_link_directories(RenderEngine PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
@@ -19,6 +20,7 @@ target_link_directories(RenderEngine PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
 #链接库
 target_link_libraries(RenderEngine PRIVATE glfw)
 target_link_libraries(RenderEngine PRIVATE OpenGL32)
+target_link_libraries(RenderEngine PRIVATE Glad)
 
 #包含头文件路径命令
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Core/public)

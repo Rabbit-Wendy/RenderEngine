@@ -2,6 +2,7 @@
 #include "Log.h"
 #include "ApplicationEvent.h"
 #include "glfw3.h"
+#include <glad.h>
 
 using namespace RE;
 
@@ -22,7 +23,7 @@ void Application::Run()
 		glClearColor(1, 0, 1, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		for (Layer* layer : m_LayerStack)  //´ÓÕ»µ×ÏòÉÏÖð²ãäÖÈ¾
+		for (Layer* layer : m_LayerStack)  //ä»Žæ ˆåº•å‘ä¸Šé€å±‚æ¸²æŸ“
 		{
 			layer->OnUpdate();
 		}
@@ -36,10 +37,10 @@ void Application::OnEvent(Event& e)
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::OnWindowClose));
 
-	//³¢ÊÔ´òÓ¡ÊÂ¼þ
+	//å°è¯•æ‰“å°äº‹ä»¶
 	RE_LOG_CORE_TRACE(e.ToString());
 
-	//´ÓÕ»¶¥ÏòÏÂ´¦ÀíÊÂ¼þ
+	//ä»Žæ ˆé¡¶å‘ä¸‹å¤„ç†äº‹ä»¶
 	for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 	{
 		(*--it)->OnEvent(e);

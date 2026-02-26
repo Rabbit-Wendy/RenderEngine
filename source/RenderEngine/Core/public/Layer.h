@@ -19,6 +19,6 @@ namespace RE
 		inline const std::string& GetName() const { return m_DebugName; }
 
 	protected:
-		std::string m_DebugName;  //仅用于调试，不要实际使用
+		std::string m_DebugName;  //浠呯敤浜庤皟璇曪紝涓嶈瀹為檯浣跨敤
 	};
 }
