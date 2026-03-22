@@ -21,6 +21,7 @@ target_link_directories(RenderEngine PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
 target_link_libraries(RenderEngine PRIVATE glfw)
 target_link_libraries(RenderEngine PRIVATE OpenGL32)
 target_link_libraries(RenderEngine PRIVATE Glad)
+target_link_libraries(RenderEngine PRIVATE ImGui)
 
 #包含头文件路径命令
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Core/public)

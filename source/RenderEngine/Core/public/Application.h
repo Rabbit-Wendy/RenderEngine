@@ -5,7 +5,6 @@
 #include "LayerStack.h"
 #include "ApplicationEvent.h"
 
-#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
 namespace RE
 {
@@ -21,10 +20,16 @@ namespace RE
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
 
+		inline Window& GetWindow() { return *m_Window; }
+
+		inline static Application& Get() { return *s_application; }
+
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
-	protected:
+	private:
+		static Application* s_application;
+
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
