@@ -26,3 +26,5 @@
     #define RE_CORE_ASSERT(x, ...)
 #endif
 
+#define RE_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+

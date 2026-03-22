@@ -50,4 +50,21 @@ namespace RE
 		}
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
+
+	//键盘输入事件
+	class RE_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int keycode)
+			:KeyEvent(keycode) {
+		}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent::" << m_keyCode;
+			return ss.str();
+		}
+		EVENT_CLASS_TYPE(KeyTyped)
+	};
 }

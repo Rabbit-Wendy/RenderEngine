@@ -3,6 +3,10 @@
 #include "glfw3.h"
 #include "Application.h"
 
+//临时
+#include <glfw3.h>
+#include <glad.h>
+
 namespace RE { 
 
 	ImGuiLayer::ImGuiLayer()
@@ -173,6 +177,110 @@ namespace RE {
 
     void ImGuiLayer::OnEvent(Event& event)
     {
+        EventDispatcher dispatcher(event);
+        dispatcher.Dispatch<MouseLButtonDownEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onMouseLButtonDownEvent));
+        dispatcher.Dispatch<MouseLButtonUpEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onMouseLButtonUpEvent));
+        dispatcher.Dispatch<MouseRButtonDownEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onMouseRButtonDownEvent));
+        dispatcher.Dispatch<MouseRButtonUpEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onMouseRButtonUpEvent));
+        dispatcher.Dispatch<MouseMovedEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onMouseMovedEvent));
+        dispatcher.Dispatch<MouseScrolledEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onMouseScrolledEvent));
+
+        dispatcher.Dispatch<KeyPressedEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onKeyPressedEvent));
+        dispatcher.Dispatch<KeyReleasedEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onKeyReleasedEvent));
+        dispatcher.Dispatch<KeyTypedEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onKeyTypedEvent));
+
+        dispatcher.Dispatch<WindowResizeEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onWindowResizeEvent));
+        dispatcher.Dispatch<WindowCloseEvent>(RE_BIND_EVENT_FN(ImGuiLayer::onWindowCloseEvent));
+    }
+
+    bool ImGuiLayer::onMouseLButtonDownEvent(MouseLButtonDownEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.MouseDown[0] = true;
+        return true;
+    }
+
+    bool ImGuiLayer::onMouseLButtonUpEvent(MouseLButtonUpEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.MouseDown[0] = false;
+        return false;
+    }
+
+    bool ImGuiLayer::onMouseRButtonDownEvent(MouseRButtonDownEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.MouseDown[1] = true;
+        return false;
+    }
+
+    bool ImGuiLayer::onMouseRButtonUpEvent(MouseRButtonUpEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.MouseDown[1] = false;
+        return false;
+    }
+
+    bool ImGuiLayer::onMouseMovedEvent(MouseMovedEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.MousePos = ImVec2(event.GetMouseX(), event.GetMouseY());
+        return false;
+    }
+
+    bool ImGuiLayer::onMouseScrolledEvent(MouseScrolledEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.MouseWheel += event.GetOffsetY();
+        io.MouseWheelH += event.GetOffsetX();
+        return false;
+    }
+
+    bool ImGuiLayer::onKeyPressedEvent(KeyPressedEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.KeysDown[event.GetKeyCode()] = true;
+
+        io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+        io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+        io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+        io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+
+        return false;
+    }
+
+    bool ImGuiLayer::onKeyReleasedEvent(KeyReleasedEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.KeysDown[event.GetKeyCode()] = false;
+        return false;
+    }
+
+    bool ImGuiLayer::onKeyTypedEvent(KeyTypedEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        int c = event.GetKeyCode();
+        if(c > 0 && c < 0x10000)
+        {
+            io.AddInputCharacter((unsigned short)c);
+        }
+        return false;
+    }
+
+    bool ImGuiLayer::onWindowResizeEvent(WindowResizeEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.DisplaySize = ImVec2((float)event.GetWidth(), (float)event.GetHight());
+        io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
+        glViewport(0, 0, event.GetWidth(), event.GetHight());
+        return false;
+    }
+
+    bool ImGuiLayer::onWindowCloseEvent(WindowCloseEvent& event)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        io.DisplaySize = ImVec2(0.0f, 0.0f);
+        return false;
     }
 
 
