@@ -13,12 +13,17 @@ public:
 
 	void OnUpdate() override
 	{
-		RE_LOG_CLIENT_TRACE("ExampleLayer::Update");
+
+
 	}
 
 	void OnEvent(Event& e) override
 	{
-		RE_LOG_CLIENT_TRACE("{0}", e.ToString());
+		//RE_LOG_CLIENT_TRACE("{0}", e.ToString());
+		if (Input::IsKeyPressed(RE_KEY_L))
+		{
+			RE_LOG_CLIENT_TRACE("L");
+		}
 	}
 };
 

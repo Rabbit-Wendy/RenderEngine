@@ -1,7 +1,8 @@
 #include "Application.h"
 #include "Log.h"
 #include "ApplicationEvent.h"
-#include "glfw3.h"
+#include "Input.h"
+#include "KeyCodes.h"
 #include <glad.h>
 
 using namespace RE;
@@ -32,6 +33,9 @@ void Application::Run()
 			layer->OnUpdate();
 		}
 
+		//auto[x,y] = Input::GetMousePosition();
+  //      RE_LOG_CORE_TRACE("{0},{1}", x, y);
+
 		m_Window->OnUpdate();
 	}
 }
@@ -42,7 +46,7 @@ void Application::OnEvent(Event& e)
 	dispatcher.Dispatch<WindowCloseEvent>(RE_BIND_EVENT_FN(Application::OnWindowClose));
 
 	//尝试打印事件
-	RE_LOG_CORE_TRACE(e.ToString());
+	//RE_LOG_CORE_TRACE(e.ToString());
 
 	//从栈顶向下处理事件
 	for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
