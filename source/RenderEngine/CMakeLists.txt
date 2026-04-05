@@ -8,10 +8,9 @@ file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${HEADER_FILES} ${SOURCE_FILES})
 
 #生成动态库项目
-add_library(RenderEngine SHARED ${HEADER_FILES} ${SOURCE_FILES})
+add_library(RenderEngine STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
 #定义宏
-target_compile_definitions(RenderEngine PRIVATE RE_BUILD_DLL)
 target_compile_definitions(RenderEngine PRIVATE GLFW_INCLUDE_NONE)
 
 #链接库路径

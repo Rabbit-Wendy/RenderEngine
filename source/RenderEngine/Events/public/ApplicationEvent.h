@@ -7,7 +7,7 @@
 namespace RE
 {
 	//窗口关闭事件
-	class RE_API WindowCloseEvent : public Event
+	class  WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() {};
@@ -16,7 +16,7 @@ namespace RE
 	};
 
 	//窗口大小改变事件
-	class RE_API WindowResizeEvent : public Event
+	class  WindowResizeEvent : public Event
 	{
 	public:
         WindowResizeEvent(double wid, double hig)

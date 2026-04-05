@@ -5,7 +5,7 @@
 namespace RE
 {
 	//键盘事件
-	class RE_API KeyEvent : public Event
+	class  KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_keyCode; }
@@ -19,7 +19,7 @@ namespace RE
 	};
 
 	//键盘按下事件
-	class RE_API KeyPressedEvent : public KeyEvent
+	class  KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode)
@@ -35,7 +35,7 @@ namespace RE
 	};
 
 	//键盘抬起事件
-	class RE_API KeyReleasedEvent : public KeyEvent
+	class  KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
@@ -52,7 +52,7 @@ namespace RE
 	};
 
 	//键盘输入事件
-	class RE_API KeyTypedEvent : public KeyEvent
+	class  KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int keycode)

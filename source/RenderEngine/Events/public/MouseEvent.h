@@ -7,7 +7,7 @@
 namespace RE
 {
 	//鼠标移动事件
-	class RE_API MouseMovedEvent : public Event
+	class  MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(double x, double y)
@@ -33,7 +33,7 @@ namespace RE
 	};
 
 	//鼠标滚轮事件
-	class RE_API MouseScrolledEvent : public Event
+	class  MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(double x, double y)
@@ -59,28 +59,28 @@ namespace RE
 	};
 
 	//鼠标按键事件
-	class RE_API MouseButtonEvent : public Event
+	class  MouseButtonEvent : public Event
 	{
 	public:
 		EVENT_CLASS_CATEGORY(EventCategoryMouseButton)
 	};
 
-	class RE_API MouseLButtonDownEvent : public MouseButtonEvent
+	class  MouseLButtonDownEvent : public MouseButtonEvent
 	{
 	public:
 		EVENT_CLASS_TYPE(MouseLButtonDown)
 	};
-	class RE_API MouseLButtonUpEvent : public MouseButtonEvent
+	class  MouseLButtonUpEvent : public MouseButtonEvent
 	{
 	public:
 		EVENT_CLASS_TYPE(MouseLButtonUp)
 	};
-	class RE_API MouseRButtonDownEvent : public MouseButtonEvent
+	class  MouseRButtonDownEvent : public MouseButtonEvent
 	{
 	public:
 		EVENT_CLASS_TYPE(MouseRButtonDown)
 	};
-	class RE_API MouseRButtonUpEvent : public MouseButtonEvent
+	class  MouseRButtonUpEvent : public MouseButtonEvent
 	{
 	public:
 		EVENT_CLASS_TYPE(MouseRButtonUp)

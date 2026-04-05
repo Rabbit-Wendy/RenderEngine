@@ -8,7 +8,7 @@
 
 namespace RE
 {
-	class RE_API Application
+	class  Application
 	{
 	public:
 		Application();

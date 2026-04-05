@@ -5,7 +5,7 @@
 
 namespace RE
 { 
-	class RE_API LayerStack
+	class  LayerStack
 	{
     public:
             LayerStack();
