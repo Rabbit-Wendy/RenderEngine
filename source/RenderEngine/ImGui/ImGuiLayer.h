@@ -5,6 +5,7 @@
 #include "KeyEvent.h"
 #include "ApplicationEvent.h"
 
+
 namespace RE
 {
 
@@ -16,26 +17,13 @@ namespace RE
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
+		virtual void OnImGuiRender() override;
 
-		void OnUpdate() override;
-		void OnEvent(Event& event) override;
+		void Begin();
+		void End();
 
-	private:
-		bool onMouseLButtonDownEvent(MouseLButtonDownEvent& event);
-        bool onMouseLButtonUpEvent(MouseLButtonUpEvent& event);
-        bool onMouseRButtonDownEvent(MouseRButtonDownEvent& event);
-        bool onMouseRButtonUpEvent(MouseRButtonUpEvent& event);
-        bool onMouseMovedEvent(MouseMovedEvent& event);
-        bool onMouseScrolledEvent(MouseScrolledEvent& event);
-
-		bool onKeyPressedEvent(KeyPressedEvent& event);
-        bool onKeyReleasedEvent(KeyReleasedEvent& event);
-        bool onKeyTypedEvent(KeyTypedEvent& event);
-
-        bool onWindowResizeEvent(WindowResizeEvent& event);
-        bool onWindowCloseEvent(WindowCloseEvent& event);
-
-		float m_Time = 0.0f;
+    private:
+			float m_time = 0.0f;
 
 	};
 

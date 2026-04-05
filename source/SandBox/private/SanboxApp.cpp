@@ -1,5 +1,5 @@
 #include "SanboxApp.h"
-#include "E:\C++practice\RenderEngine\source\RenderEngine\ImGui\ImGuiLayer.h"
+#include "Imgui.h"
 
 
 
@@ -19,6 +19,13 @@ public:
 
 	}
 
+	void OnImGuiRender() override
+	{
+		//ImGui::Begin("Test");
+		//ImGui::Text("Hello World");
+		//ImGui::End();
+	}
+
 	void OnEvent(Event& e) override
 	{
 		//RE_LOG_CLIENT_TRACE("{0}", e.ToString());
@@ -35,7 +42,6 @@ public:
 SanboxApp::SanboxApp()
 {
 	PushLayer(new ExampleLayer());
-	PushOverlay(new ImGuiLayer());
 }
 
 SanboxApp::~SanboxApp()

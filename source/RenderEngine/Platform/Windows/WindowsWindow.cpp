@@ -50,7 +50,7 @@ namespace RE
         glfwSetWindowUserPointer(m_Window, &m_Data);
         SetVSync(true);
 
-        //»Øµ÷
+        //å›žè°ƒ
         glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window)
             {
                 WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);

@@ -28,4 +28,5 @@ target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Core/
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Events/public)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../GLFW/include/GLFW)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ImGui)
 

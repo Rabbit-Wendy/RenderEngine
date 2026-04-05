@@ -4,7 +4,7 @@
 #include "Window.h"
 #include "LayerStack.h"
 #include "ApplicationEvent.h"
-
+#include "ImGuiLayer.h"
 
 namespace RE
 {
@@ -31,6 +31,7 @@ namespace RE
 		static Application* s_application;
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	};
