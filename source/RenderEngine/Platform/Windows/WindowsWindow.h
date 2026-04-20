@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include <glfw3.h>
+#include "GraphicsContext.h"
 
 namespace RE 
 {
@@ -27,6 +28,7 @@ namespace RE
         void Shutdown();
 
         GLFWwindow* m_Window;
+        GraphicsContext* m_Context;
         
         struct WindowData
         {
