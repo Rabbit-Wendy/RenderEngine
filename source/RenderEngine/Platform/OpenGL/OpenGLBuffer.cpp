@@ -1,6 +1,5 @@
 #include "OpenGLBuffer.h"
 #include <glad.h>
-#include "VertexArray.h"
 
 using namespace RE;
 

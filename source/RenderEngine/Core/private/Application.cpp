@@ -9,26 +9,6 @@ using namespace RE;
 
 Application* Application::s_application = nullptr;
 
-static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-{
-    switch (type)
-    {
-    case ShaderDataType::Float:    return GL_FLOAT;
-    case ShaderDataType::Float2:   return GL_FLOAT;
-    case ShaderDataType::Float3:   return GL_FLOAT;
-    case ShaderDataType::Float4:   return GL_FLOAT;
-    case ShaderDataType::Mat3:     return GL_FLOAT;
-    case ShaderDataType::Mat4:     return GL_FLOAT;
-    case ShaderDataType::Int:      return GL_INT;
-    case ShaderDataType::Int2:     return GL_INT;
-    case ShaderDataType::Int3:     return GL_INT;
-    case ShaderDataType::Int4:     return GL_INT;
-    case ShaderDataType::Bool:     return GL_BOOL;
-    }
-	RE_CORE_ASSERT(false, "Unknown ShaderDataType!");
-	return 0;
-}
-
 Application::Application()
 {
 	s_application = this;
@@ -38,6 +18,8 @@ Application::Application()
 	m_ImGuiLayer = new ImGuiLayer();
 	PushOverlay(m_ImGuiLayer);
 
+
+	/////////////////////   彩色三角形
     float vertices[3 * 7] = {
 	-0.5f, -0.5f, 0.0f, 1.0f,0.0f, 1.0f, 1.0f,
 	 0.5f, -0.5f, 0.0f, 1.0f,1.0f, 0.0f, 1.0f,
@@ -45,36 +27,20 @@ Application::Application()
 	};
 	unsigned int indices[3] = { 0, 1, 2 };
 
-	m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-
+	std::shared_ptr<VertexBuffer> vertexBuffer;
+	vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 	BufferLayout layout = { 
 		{ ShaderDataType::Float3, "a_Position"} ,
         { ShaderDataType::Float4, "a_Color"},
 	    //{ ShaderDataType::Float3, "a_Normal"}
 	};
+	vertexBuffer->SetLayout(layout);
+    m_VertexArray.reset(VertexArray::Create());
+	m_VertexArray->AddVertexBuffer(vertexBuffer);
 
-	m_VertexBuffer->SetLayout(layout);
-
-	// ------- Vertexv Array  顶点数组
-	glGenVertexArrays(1, &m_VertexArray);  //创建1个顶点数组对象,(VAO-Vertex Array Object), ID为m_VertexArray
-	glBindVertexArray(m_VertexArray);  //设置为当前活跃的 VAO
-
-	uint32_t index = 0;
-	for (const auto& element : layout)
-	{
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, element.GetComponentCount(), 
-			ShaderDataTypeToOpenGLBaseType(element.Type), 
-			element.Normalized ? GL_TRUE : GL_FALSE,
-			layout.GetStride(), (const void*)element.Offset);
-
-		index++;
-	}
-
-
-
-
-	m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+    std::shared_ptr<IndexBuffer> indexBuffer;
+	indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+    m_VertexArray->SetIndexBuffer(indexBuffer); //仅仅是bind了一下
 
 
 #if 0  // 直接使用VAO和VBO
@@ -96,7 +62,7 @@ Application::Application()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);  //将CPU中的indices写入GPU中的当前的IBO
 
 #endif
-	 
+
 	// -------- Shader   着色器  ——很多显卡提供了默认的着色器
 	std::string vertexSrc = R"(
 		#version 330 core
@@ -123,6 +89,53 @@ Application::Application()
 	)";
 
 	m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+
+	////////////////// 方形
+
+    float squareVertices[3 * 4] = {
+		-0.75f, -0.75f, 0.0f,
+		 0.75f, -0.75f, 0.0f,
+		 0.75f,  0.75f, 0.0f,
+		-0.75f,  0.75f, 0.0f,
+	};
+	unsigned int squareIndices[6] = { 0, 1,2, 2, 3, 0 };
+
+	std::shared_ptr<VertexBuffer> squareVertexBuffer;
+	squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+	BufferLayout squareLayout = {
+		{ ShaderDataType::Float3, "a_Position"} ,
+	};
+	squareVertexBuffer->SetLayout(squareLayout);
+	m_SquareVA.reset(VertexArray::Create());
+	m_SquareVA->AddVertexBuffer(squareVertexBuffer);
+
+	std::shared_ptr<IndexBuffer> squareIndexBuffer;
+	squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+    m_SquareVA->SetIndexBuffer(squareIndexBuffer); //仅仅是bind了一下
+	// -------- Shader   着色器  ——很多显卡提供了默认的着色器
+	std::string squareVertexSrc = R"(
+		#version 330 core
+		layout (location = 0) in vec3 a_Position;
+        out vec3 v_Position;
+		void main()
+		{
+            v_Position = a_Position;
+			gl_Position = vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);
+		}
+	)";
+
+	std::string squareFragmentSrc = R"(
+		#version 330 core
+		layout (location = 0) out vec4 color;
+		void main()
+		{
+			color = vec4(0.2f, 1.0f, 1.0f, 1.0f);
+		}
+	)";
+
+	m_SquareShader.reset(new Shader(squareVertexSrc, squareFragmentSrc));
+
+
 }
 
 Application::~Application()
@@ -136,8 +149,12 @@ void Application::Run()
 		glClearColor(0.1, 0.1, 0.1, 0.1);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-        m_Shader->bind();
-        glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+		m_SquareShader->bind();
+		m_SquareVA->Bind();
+		glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		m_Shader->bind();
+		m_VertexArray->Bind();
+        glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 		for (Layer* layer : m_LayerStack)  //从栈底向上逐层渲染
 		{
