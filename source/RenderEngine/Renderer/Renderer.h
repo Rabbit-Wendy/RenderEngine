@@ -1,18 +1,15 @@
 #pragma once
 
+#include "RenderCommand.h"
+
 namespace RE {
-	enum RenderAPI {
-		None,
-		OpenGL,
-		DirectX,
-		Vulkan,
-		Metal
-	};
 
 	class Renderer {
 	public:
-		static RenderAPI GetAPI() { return s_RendererAPI; }
-	private:
-		static RenderAPI s_RendererAPI;
+		static void BeginScene();
+        static void EndScene();
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
+
+		static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	};
 }

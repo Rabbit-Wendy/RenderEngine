@@ -3,7 +3,7 @@
 #include "ApplicationEvent.h"
 #include "Input.h"
 #include "KeyCodes.h"
-#include <glad.h>
+#include "Renderer.h"
 
 using namespace RE;
 
@@ -146,15 +146,22 @@ void Application::Run()
 {
 	while (m_Running)
 	{
-		glClearColor(0.1, 0.1, 0.1, 0.1);
-		glClear(GL_COLOR_BUFFER_BIT);
+
+		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+        RenderCommand::Clear();
+
+		Renderer::BeginScene();
+
 
 		m_SquareShader->bind();
-		m_SquareVA->Bind();
-		glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-		m_Shader->bind();
-		m_VertexArray->Bind();
-        glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        Renderer::Submit(m_SquareVA);
+        m_Shader->bind();
+        Renderer::Submit(m_VertexArray);
+
+
+        Renderer::EndScene();
+
+
 
 		for (Layer* layer : m_LayerStack)  //从栈底向上逐层渲染
 		{

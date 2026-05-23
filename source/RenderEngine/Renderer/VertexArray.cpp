@@ -8,13 +8,13 @@ VertexArray* RE::VertexArray::Create()
 {
     switch (Renderer::GetAPI())
     {
-    case RenderAPI::None:
+    case RendererAPI::API::None:
     {
         RE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
         return nullptr;
     }
     break;
-    case RenderAPI::OpenGL:
+    case RendererAPI::API::OpenGL:
         return new OpenGLVertexArray();
         break;
     default:
