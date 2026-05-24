@@ -2,6 +2,7 @@
 #include "Shader.h"
 #include <glad.h>
 #include <vector>
+#include <glm/gtc/type_ptr.hpp>
 
 RE::Shader::Shader(const std::string vertexSrc, const std::string fragmentSrc)
 {
@@ -121,4 +122,10 @@ void RE::Shader::bind() const
 void RE::Shader::unbind() const
 {
     glUseProgram(0);
+}
+
+void RE::Shader::UpLoadUniformMat4(const std::string& name, const glm::mat4& matrix)
+{
+	GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }

@@ -8,6 +8,7 @@
 #include "Shader.h"
 #include "Buffer.h"
 #include "VertexArray.h"
+#include "OrthoGraphicCamera.h"
 
 namespace RE
 {
@@ -43,6 +44,8 @@ namespace RE
 
         std::shared_ptr<Shader> m_SquareShader;
 		std::shared_ptr<VertexArray> m_SquareVA;
+
+		OrthoGraphicCamera m_Camera;
 	};
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
 
 namespace RE { 
     class Shader {
@@ -10,6 +11,8 @@ namespace RE {
 
         void bind() const;
         void unbind() const;
+
+        void UpLoadUniformMat4(const std::string& name, const glm::mat4& matrix); //上传一个uniform矩阵
 
     private:
         unsigned int m_RendererID;
