@@ -9,6 +9,7 @@
 #include "Buffer.h"
 #include "VertexArray.h"
 #include "OrthoGraphicCamera.h"
+#include "TimeStep.h"
 
 namespace RE
 {
@@ -38,14 +39,8 @@ namespace RE
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		float m_LastFrameTime = 0.0f;
 
-		std::shared_ptr<Shader> m_Shader;
-        std::shared_ptr<VertexArray> m_VertexArray;
-
-        std::shared_ptr<Shader> m_SquareShader;
-		std::shared_ptr<VertexArray> m_SquareVA;
-
-		OrthoGraphicCamera m_Camera;
 	};
 }
 

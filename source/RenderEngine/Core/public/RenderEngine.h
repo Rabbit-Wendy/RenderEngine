@@ -3,8 +3,22 @@
 // For use by applications
 #include "Log.h"
 #include "Application.h"
-#include "EntryPoint.h"
 #include "Layer.h"
+
+#include "TimeStep.h"
+
 #include "Input.h"
 #include "KeyCodes.h"
 #include "MouseButtonCodes.h"
+
+#include "Renderer.h"
+#include "RenderCommand.h"
+#include "Buffer.h"
+#include "Shader.h"
+#include "VertexArray.h"
+#include "OrthoGraphicCamera.h"
+
+#include "EntryPoint.h"
+
+
+

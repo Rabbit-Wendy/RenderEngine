@@ -18,7 +18,8 @@ namespace RE
         virtual unsigned int GetHeight() const override { return m_Data.Height; }
 
         virtual void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
-        virtual void SetVSync(bool enabled) override;
+        virtual void SetVSync(bool enabled) override;  //设置是否启用 V-Sync（Vertical Synchronization，垂直同步）
+        //是一种将显卡输出帧率与显示器刷新率同步的技术，用于消除画面撕裂（screen tearing），但可能增加输入延迟或导致帧率不足时卡顿
         virtual bool IsVSync() const override;
 
         virtual void* GetNativeWindow() const override { return m_Window; }
