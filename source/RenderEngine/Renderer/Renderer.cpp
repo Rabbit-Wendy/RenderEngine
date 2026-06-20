@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "..\Platform\OpenGL\OpenGLShader.h"
 
 using namespace RE;
 
@@ -13,10 +14,11 @@ void RE::Renderer::EndScene()
 {
 }
 
-void RE::Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+void RE::Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform)
 {
 	shader->bind();
-	shader->UpLoadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
+	std::dynamic_pointer_cast<OpenGLShader>(shader)->UpLoadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
+	std::dynamic_pointer_cast<OpenGLShader>(shader)->UpLoadUniformMat4("u_Transform", transform);
     vertexArray->Bind();
 	RenderCommand::DrawIndexed(vertexArray);
 }

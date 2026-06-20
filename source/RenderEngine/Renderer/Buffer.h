@@ -66,7 +66,7 @@ namespace RE {
 
     class BufferLayout {
     public:
-        BufferLayout() {}
+        BufferLayout() = default;
         BufferLayout(const std::initializer_list<BufferElement> elements)
             : m_Elements(elements)
         {
@@ -101,7 +101,7 @@ namespace RE {
 
 	class VertexBuffer {
     public: 
-        virtual ~VertexBuffer() {}
+        virtual ~VertexBuffer() = default;
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
 
@@ -113,7 +113,7 @@ namespace RE {
 
     class IndexBuffer {
     public: 
-        virtual ~IndexBuffer() {}
+        virtual ~IndexBuffer() = default;
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
         virtual uint32_t GetCount() const = 0;

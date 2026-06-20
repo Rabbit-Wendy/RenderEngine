@@ -1,7 +1,9 @@
 #include "SanboxApp.h"
 #include "Imgui.h"
 #include "Log.h"
-
+#include "glm/gtc/matrix_transform.hpp"
+#include "..\Platform\OpenGL\OpenGLShader.h"
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace RE;
 
@@ -9,13 +11,13 @@ class ExampleLayer : public Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f, 0.0f, 0.0f)
+		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f, 0.0f, 0.0f)/*, m_SquarePosition(0.0f, 0.0f, 0.0f)*/
 	{
-		/////////////////////   彩色三角形
+		//*******************   彩色三角形  *******************
 		float vertices[3 * 7] = {
-		-0.5f, -0.5f, 0.0f, 1.0f,0.0f, 1.0f, 1.0f,
-		 0.5f, -0.5f, 0.0f, 1.0f,1.0f, 0.0f, 1.0f,
-		 0.0f,  0.5f, 0.0f, 0.0f,1.0f, 1.0f, 1.0f,
+		-0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 1.0f, 1.0f,
+		 0.5f, -0.5f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f,
+		 0.0f,  0.5f, 0.0f,     0.0f, 1.0f, 1.0f, 1.0f,
 		};
 		unsigned int indices[3] = { 0, 1, 2 };
 
@@ -55,13 +57,14 @@ public:
 
 #endif
 
-		// -------- Shader   着色器  ——很多显卡提供了默认的着色器
+		// -------- Shader   着色器 
 		std::string vertexSrc = R"(
 		#version 330 core
 		layout (location = 0) in vec3 a_Position;
 		layout (location = 1) in vec4 a_Color;
 
         uniform mat4 u_ViewProjection;
+        uniform mat4 u_Transform;
 
         out vec3 v_Position;
         out vec4 v_Color;
@@ -69,7 +72,7 @@ public:
 		{
             v_Position = a_Position;
             v_Color = a_Color;
-			gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 		}
 	)";
 
@@ -83,15 +86,15 @@ public:
 		}
 	)";
 
-		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
 
-		////////////////// 方形
+		//************************* 方形 ****************
 
 		float squareVertices[3 * 4] = {
-			-0.75f, -0.75f, 0.0f,
-			 0.75f, -0.75f, 0.0f,
-			 0.75f,  0.75f, 0.0f,
-			-0.75f,  0.75f, 0.0f,
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f,
 		};
 		unsigned int squareIndices[6] = { 0, 1,2, 2, 3, 0 };
 
@@ -107,31 +110,35 @@ public:
 		std::shared_ptr<IndexBuffer> squareIndexBuffer;
 		squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIndexBuffer); //仅仅是bind了一下
-		// -------- Shader   着色器  ——很多显卡提供了默认的着色器
-		std::string squareVertexSrc = R"(
+		// -------- Shader   着色器
+		std::string flatColorShaderVertexSrc = R"(
 		#version 330 core
 		layout (location = 0) in vec3 a_Position;
 
         uniform mat4 u_ViewProjection;
+        uniform mat4 u_Transform;
 
         out vec3 v_Position;
 		void main()
 		{
             v_Position = a_Position;
-			gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 		}
 	)";
 
-		std::string squareFragmentSrc = R"(
+		std::string flatColorShaderFragmentSrc = R"(
 		#version 330 core
 		layout (location = 0) out vec4 color;
+        
+        uniform vec4 u_Color;
+
 		void main()
 		{
-			color = vec4(0.2f, 1.0f, 1.0f, 1.0f);
+			color = u_Color;
 		}
 	)";
 
-		m_SquareShader.reset(new Shader(squareVertexSrc, squareFragmentSrc));
+		m_FlatColorShader.reset(Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
 	}
 
 	virtual void OnUpdate(TimeStep ts) override
@@ -141,6 +148,7 @@ public:
 			RE_LOG_CLIENT_TRACE("fps: {0}", 1 / ts);
 		}
 
+		//相机移动
 		if (Input::IsKeyPressed(RE_KEY_LEFT))
 		{
 			m_CameraPosition.x += m_CameraMoveSpeed * ts;
@@ -157,15 +165,33 @@ public:
 		{
 			m_CameraPosition.y += m_CameraMoveSpeed * ts;
 		}
-		else if (Input::IsKeyPressed(RE_KEY_A))
+		else if (Input::IsKeyPressed(RE_KEY_I))
 		{
 			m_CameraRotation -= m_CameraRotationSpeed * ts;
 		}
-        else if (Input::IsKeyPressed(RE_KEY_D))
+        else if (Input::IsKeyPressed(RE_KEY_P))
         {
             m_CameraRotation += m_CameraRotationSpeed * ts;
         }
 
+		//物体移动
+  //if (Input::IsKeyPressed(RE_KEY_W))
+  //      {
+  //          m_SquarePosition.y += m_SquareMoveSpeed * ts;
+  //      }
+  //      else if (Input::IsKeyPressed(RE_KEY_S))
+  //      {
+  //          m_SquarePosition.y -= m_SquareMoveSpeed * ts;
+  //      }
+  //      else if (Input::IsKeyPressed(RE_KEY_A))
+  //      {
+  //          m_SquarePosition.x -= m_SquareMoveSpeed * ts;
+  //      }
+  //      else if (Input::IsKeyPressed(RE_KEY_D))
+  //      {
+  //          m_SquarePosition.x += m_SquareMoveSpeed * ts;
+  //      }
+	    //glm::mat4 transform = glm::translate(glm::mat4(1.0f), m_SquarePosition);
 
 
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
@@ -177,8 +203,22 @@ public:
 
 		Renderer::BeginScene(m_Camera);
 
+		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->bind();
+        std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->UpLoadUniformFloat4("u_Color", m_SquareColor);
 
-		Renderer::Submit(m_SquareShader, m_SquareVA);
+		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+		//渲染一堆方形
+		for (int j = 0;j < 10;j++)
+		{
+			for (int i = 0;i < 10;i++)
+			{
+				glm::vec3 pos = glm::vec3(i * 0.11f, j * 0.11f, 0.0f);
+				glm::mat4 transformPos = glm::translate(glm::mat4(1.0f), pos) * scale;
+				Renderer::Submit(m_FlatColorShader, m_SquareVA, transformPos);
+			}
+		}
+
+		//渲染一个三角形
 		Renderer::Submit(m_Shader, m_VertexArray);
 
 
@@ -188,6 +228,9 @@ public:
 
 	virtual void OnImGuiRender() override
 	{
+		ImGui::Begin("Settings");
+		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
+        ImGui::End();
 	}
 
 
@@ -195,7 +238,7 @@ private:
 	std::shared_ptr<Shader> m_Shader;
 	std::shared_ptr<VertexArray> m_VertexArray;
 
-	std::shared_ptr<Shader> m_SquareShader;
+	std::shared_ptr<Shader> m_FlatColorShader;
 	std::shared_ptr<VertexArray> m_SquareVA;
 
 	OrthoGraphicCamera m_Camera;
@@ -203,6 +246,13 @@ private:
     float m_CameraMoveSpeed = 5.0f;
 	float m_CameraRotation = 0.0f;
 	float m_CameraRotationSpeed = 90.0f;
+
+	//物体移动变量
+	//glm::vec3 m_SquarePosition;
+	//float m_SquareMoveSpeed = 5.0f;
+
+	//颜色
+	glm::vec4 m_SquareColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
 };
 
 
