@@ -21,7 +21,7 @@ public:
 		};
 		unsigned int indices[3] = { 0, 1, 2 };
 
-		std::shared_ptr<VertexBuffer> vertexBuffer;
+		RE::Ref<VertexBuffer> vertexBuffer;
 		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 		BufferLayout layout = {
 			{ ShaderDataType::Float3, "a_Position"} ,
@@ -32,7 +32,7 @@ public:
 		m_VertexArray.reset(VertexArray::Create());
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
-		std::shared_ptr<IndexBuffer> indexBuffer;
+		RE::Ref<IndexBuffer> indexBuffer;
 		indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer); //仅仅是bind了一下
 
@@ -98,7 +98,7 @@ public:
 		};
 		unsigned int squareIndices[6] = { 0, 1,2, 2, 3, 0 };
 
-		std::shared_ptr<VertexBuffer> squareVertexBuffer;
+		RE::Ref<VertexBuffer> squareVertexBuffer;
 		squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
 		BufferLayout squareLayout = {
 			{ ShaderDataType::Float3, "a_Position"} ,
@@ -107,7 +107,7 @@ public:
 		m_SquareVA.reset(VertexArray::Create());
 		m_SquareVA->AddVertexBuffer(squareVertexBuffer);
 
-		std::shared_ptr<IndexBuffer> squareIndexBuffer;
+		RE::Ref<IndexBuffer> squareIndexBuffer;
 		squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 		m_SquareVA->SetIndexBuffer(squareIndexBuffer); //仅仅是bind了一下
 		// -------- Shader   着色器
@@ -235,11 +235,11 @@ public:
 
 
 private:
-	std::shared_ptr<Shader> m_Shader;
-	std::shared_ptr<VertexArray> m_VertexArray;
+	RE::Ref<Shader> m_Shader;
+	RE::Ref<VertexArray> m_VertexArray;
 
-	std::shared_ptr<Shader> m_FlatColorShader;
-	std::shared_ptr<VertexArray> m_SquareVA;
+	RE::Ref<Shader> m_FlatColorShader;
+	RE::Ref<VertexArray> m_SquareVA;
 
 	OrthoGraphicCamera m_Camera;
 	glm::vec3 m_CameraPosition;

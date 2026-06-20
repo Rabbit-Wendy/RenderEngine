@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <vector>
 #include <algorithm>
 #include <utility>
@@ -21,4 +23,13 @@
 #endif
 
 #define RE_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
+namespace RE
+{ 
+    template<typename T>
+    using Scope = std::unique_ptr<T>;
+
+    template<typename T>
+    using Ref = std::shared_ptr<T>;
+}
 
