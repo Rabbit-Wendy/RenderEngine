@@ -10,12 +10,11 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${HEADER_FILES} ${SOURCE_F
 #生成可执行项目
 add_executable(SandBox ${HEADER_FILES} ${SOURCE_FILES})
 
-target_include_directories(SandBox PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../ImGui)
-
 #链接库路径
-target_link_directories(SandBox PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
+target_link_directories(SandBox PRIVATE ${CMAKE_SOURCE_DIR}/../bin)
+target_link_directories(SandBox PRIVATE ${CMAKE_SOURCE_DIR}/../3rdparty)
 
 #链接库
 target_link_libraries(SandBox PRIVATE RenderEngine)
-target_link_libraries(SandBox PRIVATE glfw)
+target_link_libraries(SandBox PRIVATE glfw3)
 target_link_libraries(SandBox PRIVATE OpenGL32)

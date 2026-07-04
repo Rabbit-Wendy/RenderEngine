@@ -14,19 +14,26 @@ add_library(RenderEngine STATIC ${HEADER_FILES} ${SOURCE_FILES})
 target_compile_definitions(RenderEngine PRIVATE GLFW_INCLUDE_NONE)
 
 #链接库路径
-target_link_directories(RenderEngine PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../bin)
+target_link_directories(RenderEngine PRIVATE ${CMAKE_SOURCE_DIR}/../bin)
+target_link_directories(RenderEngine PRIVATE ${CMAKE_SOURCE_DIR}/../3rdparty)
 
 #链接库
-target_link_libraries(RenderEngine PRIVATE glfw)
+target_link_libraries(RenderEngine PRIVATE glfw3)
 target_link_libraries(RenderEngine PRIVATE OpenGL32)
 target_link_libraries(RenderEngine PRIVATE Glad)
 target_link_libraries(RenderEngine PRIVATE ImGui)
 
 #包含头文件路径命令
+target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/Glad/include/glad)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/Glad/include/KHR)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/Glad/include)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/GLFW/include/GLFW)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/GLFW/include)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/ImGui)
+
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Core/public)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Events/public)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
-target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../GLFW/include/GLFW)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ImGui)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Renderer)
 

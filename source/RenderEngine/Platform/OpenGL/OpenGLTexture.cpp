@@ -1,5 +1,5 @@
 #include "OpenGLTexture.h"
-#include <glad/glad.h>
+#include <glad.h>
 #include <stb_image/stb_image.h>
 
 using namespace RE;

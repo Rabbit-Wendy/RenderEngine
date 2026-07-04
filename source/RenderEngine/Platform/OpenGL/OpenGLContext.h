@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GraphicsContext.h"
-#include <GLFW/glfw3.h>
+#include <glfw3.h>
 
 namespace RE {
 
