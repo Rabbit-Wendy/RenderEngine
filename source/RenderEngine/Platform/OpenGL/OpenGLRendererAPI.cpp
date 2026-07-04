@@ -2,6 +2,14 @@
 
 using namespace RE;
 
+void RE::OpenGLRendererAPI::Init()
+{
+	glEnable(GL_BLEND); //允许混合
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //设置混合模式
+
+	//glEnable(GL_DEPTH_TEST); //允许深度测试
+}
+
 void RE::OpenGLRendererAPI::SetClearColor(const glm::vec4& color)
 {
 	glClearColor(0.1, 0.1, 0.1, 0.1);

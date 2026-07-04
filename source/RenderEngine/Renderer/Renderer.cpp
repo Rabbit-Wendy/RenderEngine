@@ -5,6 +5,11 @@ using namespace RE;
 
 Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
 
+void RE::Renderer::Init()
+{
+    RenderCommand::Init();
+}
+
 void RE::Renderer::BeginScene(OrthoGraphicCamera& camera)
 {
 	m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();

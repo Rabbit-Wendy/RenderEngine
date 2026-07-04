@@ -175,6 +175,7 @@ public:
 
 		m_TextureShader = Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc);
 		m_Texture = Texture2D::Create("E:/C++practice/RenderEngine/asserts/textures/Checkerboard.png");
+		m_ChernoLogoTexture = Texture2D::Create("E:/C++practice/RenderEngine/asserts/textures/ChernoLogo.png");
 
 		std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->bind();
 		std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->UpLoadUniformInt("u_Texture", 0);
@@ -256,6 +257,9 @@ public:
 
 		m_Texture->Bind();
 		Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		m_ChernoLogoTexture->Bind();
+		Renderer::Submit(m_TextureShader, m_SquareVA, 
+			 glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		//渲染一个三角形
 		//Renderer::Submit(m_Shader, m_VertexArray);
@@ -280,6 +284,7 @@ private:
 	RE::Ref<Shader> m_FlatColorShader, m_TextureShader;
 	RE::Ref<VertexArray> m_SquareVA;
 	RE::Ref<Texture2D> m_Texture;
+	RE::Ref<Texture2D> m_ChernoLogoTexture;
 
 	OrthoGraphicCamera m_Camera;
 	glm::vec3 m_CameraPosition;
