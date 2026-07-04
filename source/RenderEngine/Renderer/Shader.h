@@ -1,4 +1,5 @@
 #include <string>
+#include "Core.h"
 
 #pragma once
 
@@ -10,6 +11,6 @@ namespace RE {
         virtual void bind() const = 0;
         virtual void unbind() const = 0;
 
-        static Shader* Create(const std::string vertexSrc, const std::string fragmentSrc);
+        static Ref<Shader> Create(const std::string vertexSrc, const std::string fragmentSrc);
     };
 }

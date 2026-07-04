@@ -4,7 +4,7 @@
 
 using namespace RE;
 
-VertexArray* RE::VertexArray::Create()
+Ref<VertexArray> RE::VertexArray::Create()
 {
     switch (Renderer::GetAPI())
     {
@@ -15,7 +15,7 @@ VertexArray* RE::VertexArray::Create()
     }
     break;
     case RendererAPI::API::OpenGL:
-        return new OpenGLVertexArray();
+        return std::make_shared<OpenGLVertexArray>();
         break;
     default:
     {

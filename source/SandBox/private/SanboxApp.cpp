@@ -14,7 +14,7 @@ public:
 		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f, 0.0f, 0.0f)/*, m_SquarePosition(0.0f, 0.0f, 0.0f)*/
 	{
 		//*******************   彩色三角形  *******************
-		float vertices[3 * 7] = {
+		float vertices[7 * 3] = {
 		-0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 1.0f, 1.0f,
 		 0.5f, -0.5f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f,
 		 0.0f,  0.5f, 0.0f,     0.0f, 1.0f, 1.0f, 1.0f,
@@ -22,18 +22,18 @@ public:
 		unsigned int indices[3] = { 0, 1, 2 };
 
 		RE::Ref<VertexBuffer> vertexBuffer;
-		vertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		vertexBuffer = VertexBuffer::Create(vertices, sizeof(vertices));
 		BufferLayout layout = {
 			{ ShaderDataType::Float3, "a_Position"} ,
 			{ ShaderDataType::Float4, "a_Color"},
 			//{ ShaderDataType::Float3, "a_Normal"}
 		};
 		vertexBuffer->SetLayout(layout);
-		m_VertexArray.reset(VertexArray::Create());
+		m_VertexArray = VertexArray::Create();
 		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		RE::Ref<IndexBuffer> indexBuffer;
-		indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		indexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
 		m_VertexArray->SetIndexBuffer(indexBuffer); //仅仅是bind了一下
 
 
@@ -86,29 +86,30 @@ public:
 		}
 	)";
 
-		m_Shader.reset(Shader::Create(vertexSrc, fragmentSrc));
+		m_Shader = Shader::Create(vertexSrc, fragmentSrc);
 
 		//************************* 方形 ****************
 
-		float squareVertices[3 * 4] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.5f,  0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f,
+		float squareVertices[5 * 4] = {
+			-0.5f, -0.5f, 0.0f,    0.0f, 0.0f,
+			 0.5f, -0.5f, 0.0f,    1.0f, 0.0f,
+			 0.5f,  0.5f, 0.0f,    1.0f, 1.0f,
+			-0.5f,  0.5f, 0.0f,    0.0f, 1.0f,
 		};
 		unsigned int squareIndices[6] = { 0, 1,2, 2, 3, 0 };
 
 		RE::Ref<VertexBuffer> squareVertexBuffer;
-		squareVertexBuffer.reset(VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+		squareVertexBuffer = VertexBuffer::Create(squareVertices, sizeof(squareVertices));
 		BufferLayout squareLayout = {
 			{ ShaderDataType::Float3, "a_Position"} ,
+			{ ShaderDataType::Float2, "a_TexCoord"} ,
 		};
 		squareVertexBuffer->SetLayout(squareLayout);
-		m_SquareVA.reset(VertexArray::Create());
+		m_SquareVA = VertexArray::Create();
 		m_SquareVA->AddVertexBuffer(squareVertexBuffer);
 
 		RE::Ref<IndexBuffer> squareIndexBuffer;
-		squareIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+		squareIndexBuffer = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
 		m_SquareVA->SetIndexBuffer(squareIndexBuffer); //仅仅是bind了一下
 		// -------- Shader   着色器
 		std::string flatColorShaderVertexSrc = R"(
@@ -118,10 +119,8 @@ public:
         uniform mat4 u_ViewProjection;
         uniform mat4 u_Transform;
 
-        out vec3 v_Position;
 		void main()
 		{
-            v_Position = a_Position;
 			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
 		}
 	)";
@@ -138,7 +137,47 @@ public:
 		}
 	)";
 
-		m_FlatColorShader.reset(Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc));
+		m_FlatColorShader = Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+
+		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->bind();
+		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->UpLoadUniformFloat4("u_Color", m_SquareColor);
+
+		std::string textureShaderVertexSrc = R"(
+		#version 330 core
+		layout (location = 0) in vec3 a_Position;
+		layout (location = 1) in vec2 a_TexCoord;
+
+        uniform mat4 u_ViewProjection;
+        uniform mat4 u_Transform;
+
+		out vec2 v_TexCoord;
+
+		void main()
+		{
+            v_TexCoord = a_TexCoord;
+			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
+		}
+	)";
+
+		std::string textureShaderFragmentSrc = R"(
+		#version 330 core
+		layout (location = 0) out vec4 color;
+        
+        in vec2 v_TexCoord;
+
+        uniform sampler2D u_Texture;
+
+		void main()
+		{
+			color = texture(u_Texture, v_TexCoord);
+		}
+	)";
+
+		m_TextureShader = Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc);
+		m_Texture = Texture2D::Create("E:/C++practice/RenderEngine/asserts/textures/Checkerboard.png");
+
+		std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->bind();
+		std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->UpLoadUniformInt("u_Texture", 0);
 	}
 
 	virtual void OnUpdate(TimeStep ts) override
@@ -203,9 +242,6 @@ public:
 
 		Renderer::BeginScene(m_Camera);
 
-		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->bind();
-        std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->UpLoadUniformFloat4("u_Color", m_SquareColor);
-
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 		//渲染一堆方形
 		for (int j = 0;j < 10;j++)
@@ -218,8 +254,11 @@ public:
 			}
 		}
 
+		m_Texture->Bind();
+		Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
 		//渲染一个三角形
-		Renderer::Submit(m_Shader, m_VertexArray);
+		//Renderer::Submit(m_Shader, m_VertexArray);
 
 
 		Renderer::EndScene();
@@ -238,8 +277,9 @@ private:
 	RE::Ref<Shader> m_Shader;
 	RE::Ref<VertexArray> m_VertexArray;
 
-	RE::Ref<Shader> m_FlatColorShader;
+	RE::Ref<Shader> m_FlatColorShader, m_TextureShader;
 	RE::Ref<VertexArray> m_SquareVA;
+	RE::Ref<Texture2D> m_Texture;
 
 	OrthoGraphicCamera m_Camera;
 	glm::vec3 m_CameraPosition;

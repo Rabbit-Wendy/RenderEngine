@@ -9,6 +9,9 @@
 #include <sstream>
 #include <functional>
 
+#include <stdint.h>
+#include <string>
+
 
 
 #define BIT(x)  (1 << x)

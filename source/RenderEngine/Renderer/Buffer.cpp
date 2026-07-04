@@ -5,7 +5,7 @@
 
 using namespace RE;
 
-VertexBuffer* RE::VertexBuffer::Create(float* vertices, uint32_t size)
+Ref<VertexBuffer> RE::VertexBuffer::Create(float* vertices, uint32_t size)
 {
     switch (Renderer::GetAPI())
     {
@@ -16,7 +16,7 @@ VertexBuffer* RE::VertexBuffer::Create(float* vertices, uint32_t size)
     }
     break;
     case RendererAPI::API::OpenGL:
-        return new OpenGLVertexBuffer(vertices, size);
+        return std::make_shared<OpenGLVertexBuffer>(vertices, size);
     break;
     default:
     {
@@ -27,7 +27,7 @@ VertexBuffer* RE::VertexBuffer::Create(float* vertices, uint32_t size)
     }   
 }
 
-IndexBuffer* RE::IndexBuffer::Create(uint32_t* indices, uint32_t count)
+Ref<IndexBuffer> RE::IndexBuffer::Create(uint32_t* indices, uint32_t count)
 {
 	switch (Renderer::GetAPI())
 	{
@@ -38,7 +38,7 @@ IndexBuffer* RE::IndexBuffer::Create(uint32_t* indices, uint32_t count)
 	}
 	break;
 	case RendererAPI::API::OpenGL:
-		return new OpenGLIndexBuffer(indices, count);
+		return std::make_shared<OpenGLIndexBuffer>(indices, count);
 	break;
 	default:
 	{
