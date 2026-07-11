@@ -47,10 +47,9 @@ void RE::OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffe
 {
     glBindVertexArray(m_RendererID);
     vertexBuffer->Bind();
-    RE_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex buffer has no layout!");
+    const auto& layout = vertexBuffer->GetLayout();
 
     uint32_t index = 0;
-    const auto& layout = vertexBuffer->GetLayout();
     for (const auto& element : layout)
     {
         glEnableVertexAttribArray(index);
@@ -61,6 +60,7 @@ void RE::OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffe
 
         index++;
     }
+    RE_CORE_ASSERT(index, "Vertex buffer has no layout!");
     m_VertexBuffers.push_back(vertexBuffer);
 }
 

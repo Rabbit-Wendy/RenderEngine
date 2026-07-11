@@ -9,13 +9,20 @@
 #include <sstream>
 #include <functional>
 
+#include <iostream>
 #include <stdint.h>
 #include <string>
+#include <array>
+
+#include "spdlog/spdlog.h"
 
 
 
 #define BIT(x)  (1 << x)
 
+
+#define RE_ERROR(...) spdlog::error(__VA_ARGS__)
+#define RE_CORE_ERROR(...) spdlog::error(__VA_ARGS__)
 
 #ifdef RE_ENABLE_ASSERTS
     #define RE_ASSERT(x, ...) { if(!(x)) { RE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }

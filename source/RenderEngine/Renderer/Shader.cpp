@@ -4,7 +4,29 @@
 
 using namespace RE;
 
-Ref<Shader> RE::Shader::Create(const std::string vertexSrc, const std::string fragmentSrc)
+Ref<Shader> RE::Shader::Create(const std::string& filepath)
+{
+    switch (Renderer::GetAPI())
+    {
+    case RendererAPI::API::None:
+    {
+        RE_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
+        return nullptr;
+    }
+    break;
+    case RendererAPI::API::OpenGL:
+        return std::make_shared<OpenGLShader>(filepath);
+        break;
+    default:
+    {
+        RE_CORE_ASSERT(false, "Unknow RendererAPI!");
+        return nullptr;
+    }
+    break;
+    }
+}
+
+Ref<Shader> RE::Shader::Create(const std::string& vertexSrc, const std::string& fragmentSrc)
 {
     switch (Renderer::GetAPI())
     {

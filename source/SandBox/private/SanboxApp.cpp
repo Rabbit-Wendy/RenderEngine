@@ -138,42 +138,10 @@ public:
 	)";
 
 		m_FlatColorShader = Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
-
 		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->bind();
 		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->UpLoadUniformFloat4("u_Color", m_SquareColor);
 
-		std::string textureShaderVertexSrc = R"(
-		#version 330 core
-		layout (location = 0) in vec3 a_Position;
-		layout (location = 1) in vec2 a_TexCoord;
-
-        uniform mat4 u_ViewProjection;
-        uniform mat4 u_Transform;
-
-		out vec2 v_TexCoord;
-
-		void main()
-		{
-            v_TexCoord = a_TexCoord;
-			gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-		}
-	)";
-
-		std::string textureShaderFragmentSrc = R"(
-		#version 330 core
-		layout (location = 0) out vec4 color;
-        
-        in vec2 v_TexCoord;
-
-        uniform sampler2D u_Texture;
-
-		void main()
-		{
-			color = texture(u_Texture, v_TexCoord);
-		}
-	)";
-
-		m_TextureShader = Shader::Create(textureShaderVertexSrc, textureShaderFragmentSrc);
+		m_TextureShader = Shader::Create("E:/C++practice/RenderEngine/asserts/shaders/Texture.glsl");
 		m_Texture = Texture2D::Create("E:/C++practice/RenderEngine/asserts/textures/Checkerboard.png");
 		m_ChernoLogoTexture = Texture2D::Create("E:/C++practice/RenderEngine/asserts/textures/ChernoLogo.png");
 
@@ -244,6 +212,7 @@ public:
 		Renderer::BeginScene(m_Camera);
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
 		//‰÷»æ“ª∂—∑Ω–Œ
 		for (int j = 0;j < 10;j++)
 		{

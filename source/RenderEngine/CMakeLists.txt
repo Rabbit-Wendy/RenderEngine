@@ -12,6 +12,7 @@ add_library(RenderEngine STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
 #定义宏
 target_compile_definitions(RenderEngine PRIVATE GLFW_INCLUDE_NONE)
+target_compile_definitions(RenderEngine PUBLIC "$<$<CONFIG:Debug>:RE_ENABLE_ASSERTS>")
 
 #链接库路径
 target_link_directories(RenderEngine PRIVATE ${CMAKE_SOURCE_DIR}/../bin)
