@@ -22,9 +22,16 @@ RE::OpenGLShader::OpenGLShader(const std::string& filePath)
 	std::string source = ReadFile(filePath);
     std::unordered_map<GLenum, std::string> shaderSources = PreProcess(source);
     Compile(shaderSources);
+
+	auto lastSlash = filePath.find_last_of("/\\");
+    lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+	auto lastDot = filePath.find_last_of(".");
+	auto count = lastDot == std::string::npos ? filePath.size() - lastSlash : lastDot - lastSlash;
+    m_Name = filePath.substr(lastSlash, count);
 }
 
-RE::OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+RE::OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+	: m_Name(name)
 {
     std::unordered_map<GLenum, std::string> sources;
     sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -81,8 +88,9 @@ std::unordered_map<GLenum, std::string> RE::OpenGLShader::PreProcess(const std::
 void RE::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 {
 	GLuint program = glCreateProgram();
-	std::vector<GLuint> shaderIDs;
-	shaderIDs.reserve(shaderSources.size());
+    RE_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
+	std::array<GLenum, 2> shaderIDs;
+	int glShaderIDIndex = 0;
 	for (auto& kv : shaderSources)
 	{
 		GLenum type = kv.first;
@@ -112,7 +120,7 @@ void RE::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& sh
 			break;
 		}
 		glAttachShader(program, shader);
-		shaderIDs.push_back(shader);
+		shaderIDs[glShaderIDIndex++] = shader;
 	}
 
 	glLinkProgram(program);
@@ -145,12 +153,12 @@ void RE::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& sh
 	}
 }
 
-void RE::OpenGLShader::bind() const
+void RE::OpenGLShader::Bind() const
 {
 	glUseProgram(m_RendererID);
 }
 
-void RE::OpenGLShader::unbind() const
+void RE::OpenGLShader::Unbind() const
 {
 	glUseProgram(0);
 }

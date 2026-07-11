@@ -13,7 +13,7 @@ public:
 	ExampleLayer()
 		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f, 0.0f, 0.0f)/*, m_SquarePosition(0.0f, 0.0f, 0.0f)*/
 	{
-		//*******************   ²ÊÉ«Èı½ÇĞÎ  *******************
+		//*******************   å½©è‰²ä¸‰è§’å½¢  *******************
 		float vertices[7 * 3] = {
 		-0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 1.0f, 1.0f,
 		 0.5f, -0.5f, 0.0f,     1.0f, 1.0f, 0.0f, 1.0f,
@@ -34,30 +34,30 @@ public:
 
 		RE::Ref<IndexBuffer> indexBuffer;
 		indexBuffer = IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t));
-		m_VertexArray->SetIndexBuffer(indexBuffer); //½ö½öÊÇbindÁËÒ»ÏÂ
+		m_VertexArray->SetIndexBuffer(indexBuffer); //ä»…ä»…æ˜¯bindäº†ä¸€ä¸‹
 
 
-#if 0  // Ö±½ÓÊ¹ÓÃVAOºÍVBO
-		// ------- Vertex Buffer  ¶¥µã»º³å
-		glGenBuffers(1, &m_VertexBuffer);  //´´½¨1¸ö¶¥µã»º³å¶ÔÏó(VBO-Vertex Buffer Object), IDÎªm_VertexBuffer
-		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer); //ÉèÖÃÎªµ±Ç°»îÔ¾µÄ VBO
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); //½«CPUÖĞµÄverticesĞ´ÈëGPUÖĞµÄµ±Ç°µÄVBO
+#if 0  // ç›´æ¥ä½¿ç”¨VAOå’ŒVBO
+		// ------- Vertex Buffer  é¡¶ç‚¹ç¼“å†²
+		glGenBuffers(1, &m_VertexBuffer);  //åˆ›å»º1ä¸ªé¡¶ç‚¹ç¼“å†²å¯¹è±¡(VBO-Vertex Buffer Object), IDä¸ºm_VertexBuffer
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer); //è®¾ç½®ä¸ºå½“å‰æ´»è·ƒçš„ VBO
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW); //å°†CPUä¸­çš„verticeså†™å…¥GPUä¸­çš„å½“å‰çš„VBO
 
-		// ------- Vertexv Array  ¶¥µãÊı×é
-		glGenVertexArrays(1, &m_VertexArray);  //´´½¨1¸ö¶¥µãÊı×é¶ÔÏó,(VAO-Vertex Array Object), IDÎªm_VertexArray
-		glBindVertexArray(m_VertexArray);  //ÉèÖÃÎªµ±Ç°»îÔ¾µÄ VAO
-		glEnableVertexAttribArray(0);  //ÆôÓÃ¶¥µãÊôĞÔ
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr); //¸æËßGPUÈçºÎ½âÎö¶¥µãÊı¾İ  //ÕâÁ½¾äÊÇ·ÅÔÚVAOÖĞµÄ½âÎö¹æÔò
-		//²ÎÊıº¬Òå£º¶¥µãÊôĞÔµÄË÷Òı, ¶¥µãÊôĞÔµÄ¸¡µãÊı¸öÊı,¸¡µãÊıÀàĞÍ£¬ ÊÇ·ñĞèÒª¹éÒ»»¯, ¶¥µãÊôĞÔµÄ²½³¤, ¶¥µãÊôĞÔµÄÆğÊ¼Î»ÖÃ	 
+		// ------- Vertexv Array  é¡¶ç‚¹æ•°ç»„
+		glGenVertexArrays(1, &m_VertexArray);  //åˆ›å»º1ä¸ªé¡¶ç‚¹æ•°ç»„å¯¹è±¡,(VAO-Vertex Array Object), IDä¸ºm_VertexArray
+		glBindVertexArray(m_VertexArray);  //è®¾ç½®ä¸ºå½“å‰æ´»è·ƒçš„ VAO
+		glEnableVertexAttribArray(0);  //å¯ç”¨é¡¶ç‚¹å±æ€§
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr); //å‘Šè¯‰GPUå¦‚ä½•è§£æé¡¶ç‚¹æ•°æ®  //è¿™ä¸¤å¥æ˜¯æ”¾åœ¨VAOä¸­çš„è§£æè§„åˆ™
+		//å‚æ•°å«ä¹‰ï¼šé¡¶ç‚¹å±æ€§çš„ç´¢å¼•, é¡¶ç‚¹å±æ€§çš„æµ®ç‚¹æ•°ä¸ªæ•°,æµ®ç‚¹æ•°ç±»å‹ï¼Œ æ˜¯å¦éœ€è¦å½’ä¸€åŒ–, é¡¶ç‚¹å±æ€§çš„æ­¥é•¿, é¡¶ç‚¹å±æ€§çš„èµ·å§‹ä½ç½®	 
 
-		// ------ Index Buffer   Ë÷Òı»º³å
-		glGenBuffers(1, &m_IndexBuffer); //´´½¨1¸öË÷Òı»º³å¶ÔÏó(IBO-Index Buffer Object), IDÎªm_IndexBuffer
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer); //ÉèÖÃÎªµ±Ç°»îÔ¾µÄ IBO
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);  //½«CPUÖĞµÄindicesĞ´ÈëGPUÖĞµÄµ±Ç°µÄIBO
+		// ------ Index Buffer   ç´¢å¼•ç¼“å†²
+		glGenBuffers(1, &m_IndexBuffer); //åˆ›å»º1ä¸ªç´¢å¼•ç¼“å†²å¯¹è±¡(IBO-Index Buffer Object), IDä¸ºm_IndexBuffer
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer); //è®¾ç½®ä¸ºå½“å‰æ´»è·ƒçš„ IBO
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);  //å°†CPUä¸­çš„indiceså†™å…¥GPUä¸­çš„å½“å‰çš„IBO
 
 #endif
 
-		// -------- Shader   ×ÅÉ«Æ÷ 
+		// -------- Shader   ç€è‰²å™¨ 
 		std::string vertexSrc = R"(
 		#version 330 core
 		layout (location = 0) in vec3 a_Position;
@@ -86,9 +86,9 @@ public:
 		}
 	)";
 
-		m_Shader = Shader::Create(vertexSrc, fragmentSrc);
+		m_Shader = Shader::Create("ä¸‰è§’å½¢", vertexSrc, fragmentSrc);
 
-		//************************* ·½ĞÎ ****************
+		//************************* æ–¹å½¢ ****************
 
 		float squareVertices[5 * 4] = {
 			-0.5f, -0.5f, 0.0f,    0.0f, 0.0f,
@@ -110,8 +110,8 @@ public:
 
 		RE::Ref<IndexBuffer> squareIndexBuffer;
 		squareIndexBuffer = IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-		m_SquareVA->SetIndexBuffer(squareIndexBuffer); //½ö½öÊÇbindÁËÒ»ÏÂ
-		// -------- Shader   ×ÅÉ«Æ÷
+		m_SquareVA->SetIndexBuffer(squareIndexBuffer); //ä»…ä»…æ˜¯bindäº†ä¸€ä¸‹
+		// -------- Shader   ç€è‰²å™¨
 		std::string flatColorShaderVertexSrc = R"(
 		#version 330 core
 		layout (location = 0) in vec3 a_Position;
@@ -137,16 +137,16 @@ public:
 		}
 	)";
 
-		m_FlatColorShader = Shader::Create(flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
-		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->bind();
+		m_FlatColorShader = Shader::Create("å››è¾¹å½¢å¯å˜è‰²çŸ©é˜µ", flatColorShaderVertexSrc, flatColorShaderFragmentSrc);
+		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->Bind();
 		std::dynamic_pointer_cast<OpenGLShader>(m_FlatColorShader)->UpLoadUniformFloat4("u_Color", m_SquareColor);
 
-		m_TextureShader = Shader::Create("E:/C++practice/RenderEngine/asserts/shaders/Texture.glsl");
+		auto textureShader = m_ShaderLibrary.Load("E:/C++practice/RenderEngine/asserts/shaders/Texture.glsl");
 		m_Texture = Texture2D::Create("E:/C++practice/RenderEngine/asserts/textures/Checkerboard.png");
 		m_ChernoLogoTexture = Texture2D::Create("E:/C++practice/RenderEngine/asserts/textures/ChernoLogo.png");
 
-		std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->bind();
-		std::dynamic_pointer_cast<OpenGLShader>(m_TextureShader)->UpLoadUniformInt("u_Texture", 0);
+		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->Bind();
+		std::dynamic_pointer_cast<OpenGLShader>(textureShader)->UpLoadUniformInt("u_Texture", 0);
 	}
 
 	virtual void OnUpdate(TimeStep ts) override
@@ -156,7 +156,7 @@ public:
 			RE_LOG_CLIENT_TRACE("fps: {0}", 1 / ts);
 		}
 
-		//Ïà»úÒÆ¶¯
+		//ç›¸æœºç§»åŠ¨
 		if (Input::IsKeyPressed(RE_KEY_LEFT))
 		{
 			m_CameraPosition.x += m_CameraMoveSpeed * ts;
@@ -182,7 +182,7 @@ public:
             m_CameraRotation += m_CameraRotationSpeed * ts;
         }
 
-		//ÎïÌåÒÆ¶¯
+		//ç‰©ä½“ç§»åŠ¨
   //if (Input::IsKeyPressed(RE_KEY_W))
   //      {
   //          m_SquarePosition.y += m_SquareMoveSpeed * ts;
@@ -213,7 +213,7 @@ public:
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
-		//äÖÈ¾Ò»¶Ñ·½ĞÎ
+		//æ¸²æŸ“ä¸€å †æ–¹å½¢
 		for (int j = 0;j < 10;j++)
 		{
 			for (int i = 0;i < 10;i++)
@@ -225,12 +225,13 @@ public:
 		}
 
 		m_Texture->Bind();
-		Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		auto textureShader = m_ShaderLibrary.Get("Texture");
+		Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_ChernoLogoTexture->Bind();
-		Renderer::Submit(m_TextureShader, m_SquareVA, 
+		Renderer::Submit(textureShader, m_SquareVA,
 			 glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-		//äÖÈ¾Ò»¸öÈı½ÇĞÎ
+		//æ¸²æŸ“ä¸€ä¸ªä¸‰è§’å½¢
 		//Renderer::Submit(m_Shader, m_VertexArray);
 
 
@@ -247,10 +248,11 @@ public:
 
 
 private:
+	ShaderLibrary m_ShaderLibrary;
 	RE::Ref<Shader> m_Shader;
 	RE::Ref<VertexArray> m_VertexArray;
 
-	RE::Ref<Shader> m_FlatColorShader, m_TextureShader;
+	RE::Ref<Shader> m_FlatColorShader;
 	RE::Ref<VertexArray> m_SquareVA;
 	RE::Ref<Texture2D> m_Texture;
 	RE::Ref<Texture2D> m_ChernoLogoTexture;
@@ -261,11 +263,11 @@ private:
 	float m_CameraRotation = 0.0f;
 	float m_CameraRotationSpeed = 90.0f;
 
-	//ÎïÌåÒÆ¶¯±äÁ¿
+	//ç‰©ä½“ç§»åŠ¨å˜é‡
 	//glm::vec3 m_SquarePosition;
 	//float m_SquareMoveSpeed = 5.0f;
 
-	//ÑÕÉ«
+	//é¢œè‰²
 	glm::vec4 m_SquareColor = glm::vec4(0.2f, 0.3f, 0.8f, 1.0f);
 };
 

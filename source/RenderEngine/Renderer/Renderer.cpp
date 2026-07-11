@@ -21,7 +21,7 @@ void RE::Renderer::EndScene()
 
 void RE::Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
 {
-	shader->bind();
+	shader->Bind();
 	std::dynamic_pointer_cast<OpenGLShader>(shader)->UpLoadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
 	std::dynamic_pointer_cast<OpenGLShader>(shader)->UpLoadUniformMat4("u_Transform", transform);
     vertexArray->Bind();

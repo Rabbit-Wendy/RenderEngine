@@ -9,12 +9,13 @@ namespace RE {
 	{
 	public:
 		OpenGLShader(const std::string& filepath);
-		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);  //顶点着色器源代码和片段着色器源代码
+		OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
 
-		virtual void bind() const override;
-		virtual void unbind() const override;
+		virtual void Bind() const override;
+		virtual void Unbind() const override;
 
+		virtual const std::string& GetName() const override { return m_Name; }
 
         void UpLoadUniformInt(const std::string& name, const int values);
 
@@ -32,5 +33,6 @@ namespace RE {
 	    void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 	private:
 		unsigned int m_RendererID;
+		std::string m_Name;
 	};
 }
