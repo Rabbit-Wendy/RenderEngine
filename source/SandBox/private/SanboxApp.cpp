@@ -11,7 +11,7 @@ class ExampleLayer : public Layer
 {
 public:
 	ExampleLayer()
-		: Layer("Example"), m_Camera(-1.6f, 1.6f, -0.9f, 0.9f), m_CameraPosition(0.0f, 0.0f, 0.0f)/*, m_SquarePosition(0.0f, 0.0f, 0.0f)*/
+		: Layer("Example"), m_CameraController(1.78, true)
 	{
 		//*******************   彩色三角形  *******************
 		float vertices[7 * 3] = {
@@ -156,32 +156,6 @@ public:
 			RE_LOG_CLIENT_TRACE("fps: {0}", 1 / ts);
 		}
 
-		//相机移动
-		if (Input::IsKeyPressed(RE_KEY_LEFT))
-		{
-			m_CameraPosition.x += m_CameraMoveSpeed * ts;
-		}
-		else if (Input::IsKeyPressed(RE_KEY_RIGHT))
-		{
-			m_CameraPosition.x -= m_CameraMoveSpeed * ts;
-		}
-		else if (Input::IsKeyPressed(RE_KEY_UP))
-		{
-			m_CameraPosition.y -= m_CameraMoveSpeed * ts;
-		}
-		else if (Input::IsKeyPressed(RE_KEY_DOWN))
-		{
-			m_CameraPosition.y += m_CameraMoveSpeed * ts;
-		}
-		else if (Input::IsKeyPressed(RE_KEY_I))
-		{
-			m_CameraRotation -= m_CameraRotationSpeed * ts;
-		}
-        else if (Input::IsKeyPressed(RE_KEY_P))
-        {
-            m_CameraRotation += m_CameraRotationSpeed * ts;
-        }
-
 		//物体移动
   //if (Input::IsKeyPressed(RE_KEY_W))
   //      {
@@ -205,11 +179,8 @@ public:
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 		RenderCommand::Clear();
 
-
-		m_Camera.SetRotation(m_CameraRotation);
-		m_Camera.SetPosition(m_CameraPosition);
-
-		Renderer::BeginScene(m_Camera);
+		m_CameraController.OnUpdate(ts);
+		Renderer::BeginScene(m_CameraController.GetCamera());
 
 		static glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -228,8 +199,7 @@ public:
 		auto textureShader = m_ShaderLibrary.Get("Texture");
 		Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 		m_ChernoLogoTexture->Bind();
-		Renderer::Submit(textureShader, m_SquareVA,
-			 glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+		Renderer::Submit(textureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		//渲染一个三角形
 		//Renderer::Submit(m_Shader, m_VertexArray);
@@ -237,6 +207,11 @@ public:
 
 		Renderer::EndScene();
 
+	}
+
+    virtual void OnEvent(Event& e) override
+	{
+		m_CameraController.OnEvent(e);
 	}
 
 	virtual void OnImGuiRender() override
@@ -257,11 +232,8 @@ private:
 	RE::Ref<Texture2D> m_Texture;
 	RE::Ref<Texture2D> m_ChernoLogoTexture;
 
-	OrthoGraphicCamera m_Camera;
-	glm::vec3 m_CameraPosition;
-    float m_CameraMoveSpeed = 5.0f;
-	float m_CameraRotation = 0.0f;
-	float m_CameraRotationSpeed = 90.0f;
+	OrthoGraphicCameraController m_CameraController;
+
 
 	//物体移动变量
 	//glm::vec3 m_SquarePosition;
