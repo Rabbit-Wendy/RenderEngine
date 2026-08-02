@@ -31,6 +31,7 @@ namespace RE
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+        bool OnWindowResize(WindowResizeEvent& e);
 
 	private:
 		static Application* s_application;
@@ -38,6 +39,7 @@ namespace RE
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
+		bool m_Minimized = false;
 		LayerStack m_LayerStack;
 		float m_LastFrameTime = 0.0f;
 

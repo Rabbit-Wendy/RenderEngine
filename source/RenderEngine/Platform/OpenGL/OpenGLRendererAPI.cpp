@@ -10,6 +10,11 @@ void RE::OpenGLRendererAPI::Init()
 	//glEnable(GL_DEPTH_TEST); //‘ –Ì…Ó∂»≤‚ ‘
 }
 
+void RE::OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
+{
+	glViewport(x, y, width, height);
+}
+
 void RE::OpenGLRendererAPI::SetClearColor(const glm::vec4& color)
 {
 	glClearColor(0.1, 0.1, 0.1, 0.1);

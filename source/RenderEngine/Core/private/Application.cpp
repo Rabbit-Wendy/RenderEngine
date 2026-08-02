@@ -37,9 +37,12 @@ void Application::Run()
 		TimeStep timestep = time - m_LastFrameTime;
 		m_LastFrameTime = time;
 
-		for (Layer* layer : m_LayerStack)  //从栈底向上逐层渲染
+		if (!m_Minimized)
 		{
-			layer->OnUpdate(timestep);
+			for (Layer* layer : m_LayerStack)  //从栈底向上逐层渲染
+			{
+				layer->OnUpdate(timestep);
+			}
 		}
 
         m_ImGuiLayer->Begin();
@@ -57,6 +60,7 @@ void Application::OnEvent(Event& e)
 {
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<WindowCloseEvent>(RE_BIND_EVENT_FN(Application::OnWindowClose));
+    dispatcher.Dispatch<WindowResizeEvent>(RE_BIND_EVENT_FN(Application::OnWindowResize));
 
 	//从栈顶向下处理事件
 	for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
@@ -73,6 +77,18 @@ bool Application::OnWindowClose(WindowCloseEvent& e)
 {
 	m_Running = false;
 	return true;
+}
+
+bool Application::OnWindowResize(WindowResizeEvent& e)
+{
+    if (e.GetWidth() == 0 || e.GetHight() == 0)
+    {
+        m_Minimized = true;
+        return false;
+    }
+    m_Minimized = false;
+    Renderer::OnWindowResize(e.GetWidth(), e.GetHight());
+    return false;  //其他事件处理器继续处理
 }
 
 void Application::PushLayer(Layer* layer)
