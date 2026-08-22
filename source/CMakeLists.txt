@@ -11,6 +11,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #添加 /utf-8 编译选项
 add_compile_options(/utf-8)
 
+#指定配置
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+
 #指定项目名称
 project(RenderEngine)
 

@@ -32,8 +32,8 @@ target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/G
 target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/GLFW/include)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_SOURCE_DIR}/../3rdparty/ImGui)
 
-target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Core/public)
-target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Events/public)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Core)
+target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Events)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/ImGui)
 target_include_directories(RenderEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Renderer)

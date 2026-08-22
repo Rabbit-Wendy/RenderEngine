@@ -1,9 +1,12 @@
 #include "SanboxApp.h"
+#include "EntryPoint.h"
+
 #include "Imgui.h"
 #include "Log.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "..\Platform\OpenGL\OpenGLShader.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "Sandbox2D.h"
 
 using namespace RE;
 
@@ -12,7 +15,7 @@ class ExampleLayer : public Layer
 public:
 	ExampleLayer()
 		: Layer("Example"), m_CameraController(1.78, true)
-	{
+    {
 		//*******************   彩色三角形  *******************
 		float vertices[7 * 3] = {
 		-0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 1.0f, 1.0f,
@@ -248,7 +251,8 @@ private:
 
 SanboxApp::SanboxApp()
 {
-	PushLayer(new ExampleLayer());
+	//PushLayer(new ExampleLayer());
+	PushLayer(new Sandbox2D());
 }
 
 SanboxApp::~SanboxApp()
